@@ -17,7 +17,8 @@ public class EventBusBuilder
     /// Creates an instance of <see cref="EventBusBuilder"/>
     /// </summary>
     /// <param name="services"></param>
-    public EventBusBuilder(IServiceCollection services)
+    /// <param name="configureHostService"></param>
+    public EventBusBuilder(IServiceCollection services, Action<IServiceCollection>? configureHostService = null)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -26,7 +27,9 @@ public class EventBusBuilder
 
         // Register the bus and its host
         Services.TryAddSingleton<EventBus>();
-        Services.AddHostedService<EventBusHost>();
+
+        configureHostService ??= services => services.AddHostedService<EventBusHost>();
+        configureHostService.Invoke(Services);
 
         // Register necessary services
         Services.AddSingleton<IEventConfigurator, DefaultEventConfigurator>(); // can be multiple do not use TryAdd*(...)

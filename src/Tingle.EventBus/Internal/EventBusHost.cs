@@ -6,7 +6,7 @@ namespace Tingle.EventBus.Internal;
 /// <summary>
 /// Host for <see cref="EventBus"/>.
 /// </summary>
-internal class EventBusHost : BackgroundService
+public class EventBusHost : BackgroundService
 {
     private readonly IHostApplicationLifetime lifetime;
     private readonly EventBus bus;
